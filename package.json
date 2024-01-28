@@ -4,7 +4,8 @@
   "description": "",
   "scripts": {
     "build": "node ./build.js",
-    "test": ""
+    "test": "",
+    "start": "open-cli dist/index.html"
   },
   "repository": {
     "type": "git",
@@ -20,6 +21,7 @@
     "typescript": "^5.3.3"
   },
   "devDependencies": {
-    "@types/node": "^20.11.10"
+    "@types/node": "^20.11.10",
+    "open-cli": "^8.0.0"
   }
 }
