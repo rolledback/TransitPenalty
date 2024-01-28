@@ -1,0 +1,38 @@
+schedules:
+- cron: "0 0 * * *"
+  displayName: Daily build
+  branches:
+    include:
+    - main
+  always: true
+
+trigger:
+- main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '20.x'
+    displayName: 'Install Node.js'
+
+  - script: |
+      npm install
+    displayName: 'npm install'
+
+  - script: |
+      npm run build
+    displayName: 'npm build'
+
+  - script: |
+      npm run test
+    displayName: 'npm test'
+
+  - task: PublishBuildArtifacts@1
+    inputs:
+      PathtoPublish: '$(Build.SourcesDirectory)/dist'
+      ArtifactName: 'dist'
+      publishLocation: 'Container'
+

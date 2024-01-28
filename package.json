@@ -1,0 +1,25 @@
+{
+  "name": "transit-penalty",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "build": "node ./build.js",
+    "test": ""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rolledback/TransitPenalty.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rolledback/TransitPenalty/issues"
+  },
+  "homepage": "https://github.com/rolledback/TransitPenalty#readme",
+  "dependencies": {
+    "typescript": "^5.3.3"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.10"
+  }
+}
