@@ -2,21 +2,25 @@ import * as geolib from "geolib";
 
 export type LatLong = { latitude: number, longitude: number };
 
-export function getEvaluationPointsGeometricBased(centerPoint: LatLong, startingRadius: number, radiusGap: number, finalRadius: number, pointsAlongRadiusStart: number, pointsAlongRadiusGrowth: number): { radius: number, points: LatLong[] }[] {
-    const radiuses: number[] = [startingRadius];
-    while (radiuses[radiuses.length - 1] + radiusGap < finalRadius) {
-        radiuses.push(radiuses[radiuses.length - 1] + radiusGap);
-    }
-    return radiuses.map((radius, idx) => ({ radius: radius, points: getEvaluationPointsForRadius(centerPoint, radius, (pointsAlongRadiusStart * (Math.pow(pointsAlongRadiusGrowth, idx)))) }));
+export type GetEvaluationPointsOptions = {
+    type: "circular";
+    startingRadius: number;
+    radiusGap: number;
+    finalRadius: number;
+    idealDistanceBetweenPoints: number;
 }
 
-export function getEvaluationPointsSpacingBased(centerPoint: LatLong, startingRadius: number, radiusGap: number, finalRadius: number, distanceBetweenPoints: number): { radius: number, points: LatLong[] }[] {
-    const radiuses: number[] = [startingRadius];
-    while (radiuses[radiuses.length - 1] + radiusGap < finalRadius) {
-        radiuses.push(radiuses[radiuses.length - 1] + radiusGap);
+export function getEvaluationPoints(centerPoint: LatLong, options: GetEvaluationPointsOptions): { radius: number, points: LatLong[] }[] {
+    if (options.type === "circular") {
+        const radiuses: number[] = [options.startingRadius];
+        while (radiuses[radiuses.length - 1] + options.radiusGap < options.finalRadius) {
+            radiuses.push(radiuses[radiuses.length - 1] + options.radiusGap);
+        }
+        radiuses.forEach((radius) => console.log(Math.PI * (radius * 2), options.idealDistanceBetweenPoints));
+        return radiuses.map((radius) => ({ radius: radius, points: getEvaluationPointsForRadius(centerPoint, radius, Math.floor((Math.PI * (radius * 2) / options.idealDistanceBetweenPoints))) }));
+    } else {
+        throw new Error("Unsupported GetEvaluationPointsOptions type")
     }
-    radiuses.forEach((radius) => console.log(Math.PI * (radius * 2), distanceBetweenPoints));
-    return radiuses.map((radius) => ({ radius: radius, points: getEvaluationPointsForRadius(centerPoint, radius, Math.floor((Math.PI * (radius * 2) / distanceBetweenPoints))) }));
 }
 
 function getEvaluationPointsForRadius(centerPoint: LatLong, radius: number, pointsAlongRadius: number) {

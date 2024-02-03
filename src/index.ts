@@ -1,29 +1,26 @@
 import * as geo from "./geo/geo";
 import { LatLong } from "./geo/geo";
 
-// const centerPoint: LatLong = { latitude: 47.617707, longitude: -122.305087 };
-// const startingRadius = geo.milesToMeters(1);
-// const radiusGap = geo.milesToMeters(1);
-// const finalRadius = geo.milesToMeters(10);
-// const pointsAlongRadiusStart = 16;
-// const pointsAlongRadiusGrowth = 1.1;
+const getEvaluationPointsButton: HTMLButtonElement = document.getElementById("calculate-button") as HTMLButtonElement;
+getEvaluationPointsButton.onclick = () => {
+    const centerPoint: LatLong = {
+        latitude: Number.parseFloat((document.getElementById("center-point-latitude-input") as HTMLInputElement).value),
+        longitude: Number.parseFloat((document.getElementById("center-point-longitude-input") as HTMLInputElement).value)
+    };
+    const options: geo.GetEvaluationPointsOptions = {
+        type: "circular",
+        startingRadius: Number.parseFloat((document.getElementById("starting-radius-input") as HTMLInputElement).value),
+        radiusGap: Number.parseFloat((document.getElementById("radius-gap-input") as HTMLInputElement).value),
+        finalRadius: Number.parseFloat((document.getElementById("final-radius-input") as HTMLInputElement).value),
+        idealDistanceBetweenPoints: Number.parseFloat((document.getElementById("ideal-distance-input") as HTMLInputElement).value)
+    };
+    const evaluationPointsPerRadius = geo.getEvaluationPoints(centerPoint, options);
 
-// const evaluationPointsPerRadius = geo.getEvaluationPointsGeometricBased(centerPoint, startingRadius, radiusGap, finalRadius, pointsAlongRadiusStart, pointsAlongRadiusGrowth);
-// evaluationPointsPerRadius.forEach((evaluationPointsForRadius) => {
-//     // console.log(geo.metersToMiles(evaluationPointsForRadius.radius), evaluationPointsForRadius.points.length);
-//     // evaluationPointsForRadius.points.forEach((evaluationPoint) => console.log(evaluationPoint));
-//     evaluationPointsForRadius.points.forEach((evaluationPoint) => console.log(`${evaluationPoint.latitude},${evaluationPoint.longitude},red,square,`));
-// });
+    const outputString = evaluationPointsPerRadius.map((evaluationPointsForRadius) => evaluationPointsForRadius.points
+        .map((evaluationPoint) => `${evaluationPoint.latitude},${evaluationPoint.longitude},red,square,`)
+        .join("\n")
+    ).join("\n");
 
-const centerPoint: LatLong = { latitude: 47.617707, longitude: -122.305087 };
-const startingRadius = 1000;
-const radiusGap = 1000;
-const finalRadius = 10000;
-const distanceBetweenPoints = 1000;
-
-const evaluationPointsPerRadius = geo.getEvaluationPointsSpacingBased(centerPoint, startingRadius, radiusGap, finalRadius, distanceBetweenPoints);
-evaluationPointsPerRadius.forEach((evaluationPointsForRadius) => {
-    // console.log(geo.metersToMiles(evaluationPointsForRadius.radius), evaluationPointsForRadius.points.length);
-    // evaluationPointsForRadius.points.forEach((evaluationPoint) => console.log(evaluationPoint));
-    evaluationPointsForRadius.points.forEach((evaluationPoint) => console.log(`${evaluationPoint.latitude},${evaluationPoint.longitude},red,square,`));
-});
+    const outputTextArea = document.getElementById("output-text-area") as HTMLTextAreaElement;
+    outputTextArea.value = outputString;
+};
