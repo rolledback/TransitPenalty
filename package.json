@@ -5,7 +5,7 @@
   "scripts": {
     "build": "node ./build.js",
     "test": "",
-    "start": "open-cli dist/index.html"
+    "start": "open-cli out/index.html"
   },
   "repository": {
     "type": "git",
@@ -22,7 +22,8 @@
   },
   "devDependencies": {
     "@types/node": "^20.11.10",
-    "typescript": "^5.3.3",
-    "open-cli": "^8.0.0"
+    "esbuild": "^0.20.0",
+    "open-cli": "^8.0.0",
+    "typescript": "^5.3.3"
   }
 }

@@ -1,20 +1,23 @@
 const path = require("path");
-const os = require("os");
 const fs = require("fs");
 const child_process = require("child_process");
-
+const esbuild = require("esbuild");
 const tsc = path.join(".", "node_modules", ".bin", "tsc");
 
 const distDir = path.join(".", "dist");
+const outDir = path.join(".", "out");
+
 const webFiles = [
     path.join(".", "src", "index.html"),
     path.join(".", "src", "style.css"),
     path.join(".", "src", "favicon.ico"),
 ];
 
-function cleanDist() {
-    fs.rmSync(distDir, { force: true, recursive: true });
-    fs.mkdirSync(distDir);
+function clean() {
+    [distDir, outDir].forEach((dir) => {
+        fs.rmSync(dir, { force: true, recursive: true });
+        fs.mkdirSync(dir);
+    });
 }
 
 function buildTypescript() {
@@ -22,9 +25,18 @@ function buildTypescript() {
 }
 
 function copyWeb() {
-    webFiles.forEach((file) => fs.copyFileSync(file, path.join(distDir, path.basename(file))));
+    webFiles.forEach((file) => fs.copyFileSync(file, path.join(outDir, path.basename(file))));
 }
 
-cleanDist();
+function bundle() {
+    esbuild.buildSync({
+        entryPoints: [path.join(distDir, "index.js")],
+        bundle: true,
+        outfile: path.join(outDir, "index.js"),
+    });
+}
+
+clean();
 buildTypescript();
 copyWeb();
+bundle();
