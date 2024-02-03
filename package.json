@@ -18,10 +18,11 @@
   },
   "homepage": "https://github.com/rolledback/TransitPenalty#readme",
   "dependencies": {
-    "typescript": "^5.3.3"
+    "geolib": "^3.3.4"
   },
   "devDependencies": {
     "@types/node": "^20.11.10",
+    "typescript": "^5.3.3",
     "open-cli": "^8.0.0"
   }
 }
