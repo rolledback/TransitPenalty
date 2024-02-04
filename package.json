@@ -18,10 +18,14 @@
   },
   "homepage": "https://github.com/rolledback/TransitPenalty#readme",
   "dependencies": {
-    "geolib": "^3.3.4"
+    "geolib": "^3.3.4",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@types/node": "^20.11.10",
+    "@types/react": "^18.2.52",
+    "@types/react-dom": "^18.2.18",
     "esbuild": "^0.20.0",
     "open-cli": "^8.0.0",
     "typescript": "^5.3.3"
